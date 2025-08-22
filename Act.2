@@ -1,0 +1,76 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace act2
+{
+    internal class Program
+    {
+        static int Curve(int score)
+        {
+            if (score >= 60 && score <= 79)
+            {
+                return Math.Min(score += 5, 100); 
+            }
+            else if (score >= 80 && score <= 89)
+            {
+                return Math.Min(score += 3, 100); 
+            }
+            return score;
+        }
+
+        static string Bucket(int finalScore)
+        {
+            switch (finalScore)
+            {
+                case int n when (n >= 90):
+                    return "A";
+                case int n when (n >= 80):
+                    return "B";
+                case int n when (n >= 70):
+                    return "C";
+                case int n when (n >= 60):
+                    return "D";
+                default:
+                    return "F";
+            }
+        }
+
+        static void Main()
+        {
+            List<(string name, int finalScore, string grade)> students = new List<(string, int, string)>();
+
+            Console.WriteLine("Enter student name (or type 'END' to finish):");
+
+            while (true)
+            {
+                Console.WriteLine("Student name: ");
+                string name = Console.ReadLine().Trim();
+                if (name.ToUpper() == "END") break;
+
+                Console.Write("Enter score: ");
+                int score;
+                if (!int.TryParse(Console.ReadLine(), out score) || score < 0 || score > 100)
+                {
+                    Console.WriteLine("Invalid score");
+                    continue;
+                }
+
+                int finalScore = Curve(score);
+                string grade = Bucket(finalScore);
+                students.Add((name, finalScore, grade));
+            }
+
+            Console.WriteLine("\nBuckets:");
+            string[] order = { "A", "B", "C", "D", "F" };
+            foreach (var b in order)
+            {
+                var bucket = students.Where(x => x.grade == b).ToList();
+                if (bucket.Count > 0)
+                    Console.WriteLine($"{b}: {string.Join(", ", bucket.Select(x => x.name))}");
+            }
+        }
+    }
+}
