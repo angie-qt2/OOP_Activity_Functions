@@ -33,7 +33,7 @@ namespace ACT10
                 Console.Write("Category (GROCERY/ELECTRONICS/OTHER): ");
                 string cat = Console.ReadLine().ToUpper();
 
-                if (qty > 1 || price > 0 || (cat != "GROCERY" && cat != "ELECTRONICS" && cat != "OTHER"))
+                if (qty < 1 || price < 0 || (cat != "GROCERY" && cat != "ELECTRONICS" && cat != "OTHER"))
                 { Console.WriteLine("Invalid!"); continue; }
 
                 cart.Add(new CartLine { itemCode = code, Qty = qty, unitPrice = price, Cat = cat });
