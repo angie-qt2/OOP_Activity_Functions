@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Act5
+{
+    internal class Program
+    {
+        static void Main()
+        {
+            Console.Write("Enter username: ");
+            string t = Console.ReadLine();
+            if (IsValid(t))
+                Console.WriteLine("Valid. ");
+            else
+            {
+                Console.WriteLine("Invalid username. ");
+                foreach (var s in suggestion(t))
+                    Console.WriteLine("Suggestion: " + s);
+            }
+        }
+
+        static bool IsValid(string u)
+        {
+            if (u.Length < 6 || u.Length > 15) return false;
+            if (!char.IsLetter(u[0])) return false;
+            bool digit = false;
+            foreach (char ch in u)
+            {
+                if (!(char.IsLetterOrDigit(ch) || ch == '_')) return false;
+                if (char.IsDigit(ch)) digit = true;
+            }
+            return digit;
+        }
+
+        static List<string> suggestion(string u)
+        {
+            List<string> list = new List<string>();
+            string fix = u.Replace(" ", "_");
+            if (!char.IsLetter(fix[0])) fix = "U" + fix;
+            if (fix.Length < 6) fix += "123";
+            list.Add(fix);
+            list.Add(fix + "1");
+            return list;
+        }
+    }
+}
+
